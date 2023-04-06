@@ -263,4 +263,4 @@ if (!interaction.isChatInputCommand()) return;
 
 client.login(process.env.BOT_TOKEN);
 
-// Hello here's my code
+// Hello here's my code I'm Fuyu
