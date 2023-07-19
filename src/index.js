@@ -10,15 +10,15 @@ const rpc = require("./status.js");
 require("dotenv").config();
 
 const commandTable = {
-  "❗ ta!help": "Hiển thị danh sách lệnh\n",
+  "❗ fu!help": "Hiển thị danh sách lệnh\n",
 
-  "⌛ ta!ping": "Kiểm tra ping\n",
+  "⌛ fu!ping": "Kiểm tra ping\n",
 
-  "🔅 ta!today": "Hiển thị ngày giờ hiện tại\n",
+  "🔅 fu!today": "Hiển thị ngày giờ hiện tại\n",
 
-  "♻️ ta!clear [number]": "Xoá tin nhắn trong kênh (tối đa 100 tin nhắn)\n",
+  "♻️ fu!clear [number]": "Xoá tin nhắn trong kênh (tối đa 100 tin nhắn)\n",
 
-  "✅ ta!all": "Xoá tất cả tin nhắn trong kênh",
+  "✅ fu!all": "Xoá tất cả tin nhắn trong kênh",
 };
 
 const now = new Date();
@@ -72,7 +72,7 @@ client.on(Events.MessageCreate, async (message) => {
 
   if (message.content === `<@${client.user.id}>`) {
     message.reply(
-      "Tairitsu đang chơi game!.. Nhưng có chuyện gì vậy? Nếu bạn cần giúp đỡ hãy nhập `ta!help` hoặc sử dụng `/help`"
+      "*Fuyu đang nhìm chằm chằm vào bạn!...* \n Có chuyện gì vậy? Nếu bạn cần giúp đỡ hãy nhập `ta!help` hoặc sử dụng `/help`"
     );
   }
 
