@@ -17,7 +17,7 @@ require("dotenv").config();
 
             // await interaction.deferReply();
             await interaction.reply({ content: 
-            `🔗 Đang tải hình ảnh cho bạn! Điều này có thể mất đến 1 phút`});
+            `🔗 Loading images for you! This may take up to 1 minute`});
 
             const prompt = interaction.options.getString('prompt');
             
@@ -40,7 +40,7 @@ require("dotenv").config();
 
                 const embed = new EmbedBuilder()
                 .setColor(0xce63e9)
-                .setTitle(`Đây là ảnh của bạn về: ${prompt}`)
+                .setTitle(`This is your image about: ${prompt}`)
                 .setImage(image)
                 .setFooter({text: `Image Generator by ${guild.name}`, iconURL: `${guild.iconURL({ dynamic: true })}`, components: [resetButton]})
                 
@@ -53,7 +53,7 @@ require("dotenv").config();
             collector.on('collect', async (buttonInteraction) => {
                 // Gửi lại ảnh khi button reset được click
                 buttonInteraction.deferUpdate();
-                await interaction.editReply({ content: `🕙 Đang tải lại hình ảnh cho bạn! Điều này có thể mất đến 1 phút` });
+                await interaction.editReply({ content: `🕙 Reloading images for you! This may take up to 1 minute` });
 
                 let resetResponse = await openai.createImage({
                     prompt: `${prompt}`,
@@ -64,7 +64,7 @@ require("dotenv").config();
 
                 let resetEmbed = new EmbedBuilder()
                     .setColor(0xce63e9)
-                    .setTitle(`Đây là ảnh của bạn về: ${prompt}`)
+                    .setTitle(`This is your image about: ${prompt}`)
                     .setImage(resetImage)
                     .setFooter({ text: `Image Generator by ${guild.name}`, iconURL: `${guild.iconURL({ dynamic: true })}` });
 
@@ -73,7 +73,7 @@ require("dotenv").config();
             collector.on('end', () => collector.stop('Collector ended'));
             } catch (e) {
             console.error(e);
-            await interaction.editReply({ content: `Xảy ra lỗi hoặc từ ngữ không hợp lệ` });
+            await interaction.editReply({ content: `An error or invalid wording occurred` });
         }
     },
 };
