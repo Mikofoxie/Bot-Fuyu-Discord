@@ -5,7 +5,7 @@ module.exports = {
   once: true,
   async execute(client) {
     client.user.setPresence({
-      activities: [{ name: `Arcaea and /help` }],
+      activities: [{ name: `Staring at you and /help` }],
       status: "idle",
     });
   },
