@@ -4,21 +4,21 @@ const giphy = require("giphy-api")();
 const registerCommandSlash = require("./command.js");
 
 // const client = new Discord.Client({ intents: ["GUILD_MESSAGES", "GUILDS"] });
-const prefix = "ta!";
+const prefix = "fu!";
 const moment = require("moment");
 const rpc = require("./status.js");
 require("dotenv").config();
 
 const commandTable = {
-  "❗ fu!help": "Hiển thị danh sách lệnh\n",
+  "❗ fu!help": "Show command list\n",
 
-  "⌛ fu!ping": "Kiểm tra ping\n",
+  "⌛ fu!ping": "Check ping\n",
 
-  "🔅 fu!today": "Hiển thị ngày giờ hiện tại\n",
+  "🔅 fu!today": "Show current date and time\n",
 
-  "♻️ fu!clear [number]": "Xoá tin nhắn trong kênh (tối đa 100 tin nhắn)\n",
+  "♻️ fu!clear [number]": "Delete channel messages (up to 100 messages)\n",
 
-  "✅ fu!all": "Xoá tất cả tin nhắn trong kênh",
+  "✅ fu!all": "Delete all messages in the channel",
 };
 
 const now = new Date();
@@ -72,7 +72,7 @@ client.on(Events.MessageCreate, async (message) => {
 
   if (message.content === `<@${client.user.id}>`) {
     message.reply(
-      "*Fuyu đang nhìm chằm chằm vào bạn!...* \n Có chuyện gì vậy? Nếu bạn cần giúp đỡ hãy nhập `ta!help` hoặc sử dụng `/help`"
+      "*Fuyu is staring at you!...* \n What's wrong? If you need help type `fu!help` or use `/help`"
     );
   }
 
@@ -84,7 +84,7 @@ client.on(Events.MessageCreate, async (message) => {
         .map((command) => `${command}: ${commandTable[command]}`)
         .join("\n");
       message.channel.send(
-        `**Chào bạn ${username}~ **\nĐây là danh sách các lệnh:\n\`\`\`${helpMessage} \n\n🔯 Hoặc bạn có thể sử dụng (/) để hiển thị thêm command 🔯\n\`\`\` \`\`\`fix\n> Lưu ý: Tin nhắn chỉ có thể xoá trong vòng 14 ngày\`\`\` `,
+        `**Chào bạn ${username}~ **\nThis is the command list:\n\`\`\`${helpMessage} \n\n🔯 Or you can use (/) to display more command 🔯\n\`\`\` \`\`\`fix\n> Note: Messages can only be deleted within 14 days\`\`\` `,
       );
       break;
 
@@ -101,17 +101,17 @@ client.on(Events.MessageCreate, async (message) => {
       const amount = parseInt(message.content.split(" ")[1]) + 1;
 
       if (isNaN(amount)) {
-        return message.reply("Điền số lượng tin nhắn cần xóa.");
+        return message.reply("Enter the number of messages to delete.");
       } else if (amount < 1 || amount > 100) {
-        return message.reply("Vui lòng nhập số lượng tin nhắn từ 1 đến 100.");
+        return message.reply("Please enter the number of messages from 1 to 100.");
       }
 
       message.channel
         .bulkDelete(amount, true)
         .then((deletedMessages) => {
-          console.log(`Đã xoá ${deletedMessages.size} tin nhắn.`);
+          console.log(`Deleted ${deletedMessages.size} message.`);
           message.channel
-            .send(`Đã xoá ${deletedMessages.size - 1} tin nhắn.`) // check how many messages the bot has deleted
+            .send(`Deleted ${deletedMessages.size - 1} message.`) // check how many messages the bot has deleted
             .then((msg) => {
               setTimeout(() => {
                 msg.delete().catch((err) => console.log(err));
@@ -121,7 +121,7 @@ client.on(Events.MessageCreate, async (message) => {
         .catch((err) => {
           console.error(err);
           message.channel.send(
-            "Đã có lỗi xảy ra khi xoá tin nhắn trong kênh này!"
+            "An error occurred while deleting messages in this channel!"
           );
         });
       break;
@@ -133,7 +133,7 @@ client.on(Events.MessageCreate, async (message) => {
           deletedMessages = await message.channel.bulkDelete(100, true);
         } while (deletedMessages.size !== 0);
         message.channel
-          .send("Đã xoá toàn bộ tin nhắn trong kênh này.")
+          .send("All messages in this channel have been deleted.")
           .then((msg) => {
             setTimeout(() => {
               msg.delete().catch((err) => console.log(err));
@@ -142,7 +142,7 @@ client.on(Events.MessageCreate, async (message) => {
       } catch (error) {
         console.error(error);
         message.channel.send(
-          "Đã có lỗi xảy ra khi xoá tin nhắn trong kênh này!"
+          "An error occurred while deleting messages in this channel"
         );
       }
       break;
@@ -163,24 +163,24 @@ if (!interaction.isChatInputCommand()) return;
         .map((command) => `${command}: ${commandTable[command]}`)
         .join("\n");
       interaction.reply({
-        content: `**Chào bạn ${username}~ **\nĐây là danh sách các lệnh:\n\`\`\`${helpMessage} \n\n🔯 Hoặc bạn có thể sử dụng (/) để hiển thị thêm command 🔯\n\`\`\` \`\`\`fix\n> Lưu ý: Tin nhắn chỉ có thể xoá trong vòng 14 ngày\`\`\` `,
+        content: `**Hi ${username}~ **\nThis is the command list:\n\`\`\`${helpMessage} \n\n🔯 Or you can use (/) to display more command 🔯\n\`\`\` \`\`\`fix\n> Note: Messages can only be deleted within 14 days\`\`\` `,
         ephemeral: true,
       });
       break;
 
     case "ping":
       const ping = Math.round(client.ws.ping);
-      interaction.reply(`🏓 Pong! Ping của mình là: ${ping}ms.`);
+      interaction.reply(`🏓 Pong! My Ping is: ${ping}ms.`);
       break;
 
     case "clear":
       const amount = parseInt(interaction.options.get("number").value);
       console.log(`${username}: ` + amount);
       if (isNaN(amount)) {
-        return interaction.reply("Điền số lượng tin nhắn cần xóa.");
+        return interaction.reply("Enter the number of messages to delete.");
       } else if (amount < 1 || amount > 100) {
         return interaction.reply(
-          "Vui lòng nhập số lượng tin nhắn từ 1 đến 100."
+          "Please enter the number of messages from 1 to 100"
           );
         }
         
@@ -190,7 +190,7 @@ if (!interaction.isChatInputCommand()) return;
           const filteredMessages = messages.filter((m) => !m.pinned);
           if (filteredMessages.size < 1) {
             return interaction
-            .reply(`Không có tin nhắn để xóa trong kênh này.`)
+            .reply(`There are no messages to delete in this channel.`)
             .then(() => {
               setTimeout(() => {
                 interaction.deleteReply();
@@ -204,9 +204,9 @@ if (!interaction.isChatInputCommand()) return;
       interaction.channel
         .bulkDelete(amount, true)
         .then((deletedMessages) => {
-          console.log(`Đã xoá ${deletedMessages.size} tin nhắn.`);
+          console.log(`Deleted ${deletedMessages.size} message.`);
             interaction
-            .editReply(`Đã xoá ${deletedMessages.size} tin nhắn.`, {ephemeral: true}) // check how many messages the bot has deleted
+            .editReply(`Deleted ${deletedMessages.size} message.`, {ephemeral: true}) // check how many messages the bot has deleted
             .then(() => {
                 setTimeout(() => {
                   interaction.deleteReply();
@@ -217,7 +217,7 @@ if (!interaction.isChatInputCommand()) return;
         .catch((err) => {
           console.error(err);
           interaction.channel.send(
-            `Đã có lỗi xảy ra khi xoá tin nhắn trong kênh này! `
+            `An error occurred while deleting messages in this channel! `
             );
           });
       break;
@@ -231,7 +231,7 @@ if (!interaction.isChatInputCommand()) return;
         } while (deletedMessages.size !== 0);
 
         interaction
-          .editReply("Đã xoá toàn bộ tin nhắn trong kênh này.", {ephemeral: true})
+          .editReply("All messages in this channel have been deleted.", {ephemeral: true})
           .then(() => {
             setTimeout(() => {
               interaction.deleteReply().catch(console.error);
@@ -240,7 +240,7 @@ if (!interaction.isChatInputCommand()) return;
       } catch (error) {
         console.error(error);
         await interaction.reply(
-          `Đã có lỗi xảy ra khi xoá tin nhắn trong kênh này!`, {ephemeral: true}
+          `An error occurred while deleting messages in this channel!`, {ephemeral: true}
         );
       }
       break;
